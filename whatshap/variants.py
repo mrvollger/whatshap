@@ -112,6 +112,7 @@ class ReadSetReader:
         kmerald_window: int = 25,
         use_supplementary: bool = False,
         supplementary_distance_threshold: int = 100_000,
+        threads: int = 4,
     ):
         """
         paths -- list of BAM paths
@@ -122,6 +123,7 @@ class ReadSetReader:
         affine -- use affine gap costs
         gap_start, gap_extend, default_mismatch -- parameters for affine gap cost alignment
         duplicates -- read alignments marked as duplicate
+        threads -- number of threads to use for BAM decompression
         """
         self._mapq_threshold = mapq_threshold
         self._numeric_sample_ids = numeric_sample_ids
@@ -141,9 +143,9 @@ class ReadSetReader:
         self._use_supplementary = use_supplementary
         self._supplementary_distance_threshold = supplementary_distance_threshold
         if len(paths) == 1:
-            self._reader = SampleBamReader(paths[0], reference=reference)
+            self._reader = SampleBamReader(paths[0], reference=reference, threads=threads)
         else:
-            self._reader = MultiBamReader(paths, reference=reference)
+            self._reader = MultiBamReader(paths, reference=reference, threads=threads)
 
     @property
     def n_paths(self) -> int:

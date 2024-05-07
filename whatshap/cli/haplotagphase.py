@@ -42,6 +42,7 @@ def add_arguments(parser):
     arg("variant_file", metavar="VCF", help="VCF file with variants to phase (must be gzip-compressed and indexed)")
     arg("alignment_file", metavar="ALIGNMENTS",
         help="BAM/CRAM file with alignments tagged by haplotype and phase set")
+    arg("--threads", "-t", help="Number of threads for BAM decompression.", type=int, default=4)
 # fmt: on
 
 
@@ -57,6 +58,7 @@ def run_haplotagphase(
     cut_poly: int = 10,
     write_command_line_header: bool = True,
     tag: str = "PS",
+    threads: int = 4,
 ):
     if reference is None:
         raise CommandLineError("Option --reference should be specified")
@@ -75,6 +77,7 @@ def run_haplotagphase(
                 NumericSampleIds(),
                 ignore_read_groups,
                 only_snvs=False,
+                threads=threads,
             )
         )
         try:

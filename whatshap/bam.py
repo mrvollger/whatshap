@@ -49,7 +49,9 @@ class SampleBamReader(BamReader):
     (bai/crai).
     """
 
-    def __init__(self, path: str, *, source_id: int = 0, reference: Optional[str] = None):
+    def __init__(
+        self, path: str, *, source_id: int = 0, reference: Optional[str] = None, threads: int = 1
+    ):
         """
         path -- URL or path to BAM or CRAM file
         reference -- optional path to FASTA reference for CRAM
@@ -58,7 +60,7 @@ class SampleBamReader(BamReader):
         if reference:
             reference = os.path.abspath(reference)
 
-        self._samfile = pysam.AlignmentFile(path, reference_filename=reference)
+        self._samfile = pysam.AlignmentFile(path, reference_filename=reference, threads=threads)
         try:
             # TODO
             # multiple_iterators should not be necessary -
@@ -161,10 +163,12 @@ class MultiBamReader(BamReader):
     is much easier.
     """
 
-    def __init__(self, paths: Iterable[str], *, reference: Optional[str] = None):
+    def __init__(self, paths: Iterable[str], *, reference: Optional[str] = None, threads: int = 4):
         self._readers = []
         for source_id, path in enumerate(paths):
-            self._readers.append(SampleBamReader(path, source_id=source_id, reference=reference))
+            self._readers.append(
+                SampleBamReader(path, source_id=source_id, reference=reference, threads=threads)
+            )
 
     def fetch(
         self,
