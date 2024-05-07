@@ -70,6 +70,7 @@ def run_haplotagphase(
     else:
         command_line = None
     with ExitStack() as stack:
+        logger.info(f"Using {threads} threads for BAM decompression.")
         phased_input_reader = stack.enter_context(
             PhasedInputReader(
                 [alignment_file],
