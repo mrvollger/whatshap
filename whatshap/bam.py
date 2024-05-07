@@ -60,6 +60,7 @@ class SampleBamReader(BamReader):
         if reference:
             reference = os.path.abspath(reference)
 
+        logging.info(f"Using {threads} threads for BAM decompression.")
         self._samfile = pysam.AlignmentFile(path, reference_filename=reference, threads=threads)
         try:
             # TODO

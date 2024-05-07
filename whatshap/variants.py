@@ -142,6 +142,7 @@ class ReadSetReader:
         self._reader: BamReader
         self._use_supplementary = use_supplementary
         self._supplementary_distance_threshold = supplementary_distance_threshold
+        logging.info(f"Using {threads} threads for BAM decompression.")
         if len(paths) == 1:
             self._reader = SampleBamReader(paths[0], reference=reference, threads=threads)
         else:
