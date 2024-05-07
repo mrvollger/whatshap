@@ -163,7 +163,7 @@ class MultiBamReader(BamReader):
     is much easier.
     """
 
-    def __init__(self, paths: Iterable[str], *, reference: Optional[str] = None, threads: int = 4):
+    def __init__(self, paths: Iterable[str], *, reference: Optional[str] = None, threads: int = 1):
         self._readers = []
         for source_id, path in enumerate(paths):
             self._readers.append(
