@@ -112,7 +112,7 @@ class ReadSetReader:
         kmerald_window: int = 25,
         use_supplementary: bool = False,
         supplementary_distance_threshold: int = 100_000,
-        threads: int = 4,
+        threads: int = 1,
     ):
         """
         paths -- list of BAM paths
